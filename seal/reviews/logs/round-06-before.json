@@ -1,0 +1,39 @@
+{
+  "round": "06",
+  "title": "Evidence integrity and tampering",
+  "elapsed_seconds": 0.23,
+  "checks": [
+    {
+      "check": "five tamper cases refused",
+      "status": "PASS",
+      "detail": "5 tamper cases refused"
+    },
+    {
+      "check": "malformed observation gives clean error",
+      "status": "PASS",
+      "detail": "clean TamperError"
+    },
+    {
+      "check": "record with no probes gives clean error",
+      "status": "FAIL",
+      "detail": "AssertionError: expected an error, none raised"
+    },
+    {
+      "check": "timeout verdict is never CLEAN",
+      "status": "PASS",
+      "detail": "ok"
+    },
+    {
+      "check": "swapped subject detected",
+      "status": "PASS",
+      "detail": "ok"
+    },
+    {
+      "check": "verify without --trust refused",
+      "status": "PASS",
+      "detail": "refused"
+    }
+  ],
+  "passed": 5,
+  "failed": 1
+}

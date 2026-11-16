@@ -1,0 +1,20 @@
+seal demo: two programs, one hidden behaviour change
+
+  stdout before : order total: 42
+  stdout after  : order total: 42
+  a stdout assertion passes on both
+
+seal behaviour report
+  before -> after
+  manifest: 21ff77b04dea
+
+probe: prints_total
+  UNEXPECTED files_delta (difference outside declared intent scope)
+
+verdict: UNEXPECTED
+counts: UNEXPECTED=1, UNKNOWN=0, INTENDED=0, SAME=5
+
+unexpected channels: prints_total/files_delta
+
+seal caught: prints_total/files_delta
+next: seal init, then seal record --subject DIR --tag NAME

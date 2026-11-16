@@ -1,0 +1,39 @@
+{
+  "round": "04",
+  "title": "Secrets, environment and output handling",
+  "elapsed_seconds": 0.08,
+  "checks": [
+    {
+      "check": "probe secret is redacted",
+      "status": "PASS",
+      "detail": "secret value absent"
+    },
+    {
+      "check": "host secret is redacted",
+      "status": "PASS",
+      "detail": "host secret value absent"
+    },
+    {
+      "check": "reserved environment keys refused",
+      "status": "PASS",
+      "detail": "8 reserved keys refused"
+    },
+    {
+      "check": "only env names recorded",
+      "status": "PASS",
+      "detail": "names only"
+    },
+    {
+      "check": "stderr output cap enforced",
+      "status": "PASS",
+      "detail": "capped at 256"
+    },
+    {
+      "check": "invalid UTF-8 does not crash",
+      "status": "PASS",
+      "detail": "replacement decoding"
+    }
+  ],
+  "passed": 6,
+  "failed": 0
+}

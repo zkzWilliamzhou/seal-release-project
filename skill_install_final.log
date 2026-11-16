@@ -1,0 +1,6 @@
+pass 1: 140 resolved file links
+pass 1: fetched 0
+installed by vendor: anthropics=368, mattpocock=138, stop-slop=7, superpowers=99, vercel-labs=9
+installed 621 files, skipped 0, removed 0
+lock -> /data/workspace/seal/skills-lock.json
+report -> /data/workspace/seal/docs/SKILL_INSTALL_REPORT.md

@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "seal-behavior"
+version = "0.1.0"
+description = "Show what a change actually changed, and hand the proof to somebody who was not there."
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+dependencies = []
+
+[project.scripts]
+seal = "seal.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+packages = ["seal"]
+
+[tool.setuptools.discovery]

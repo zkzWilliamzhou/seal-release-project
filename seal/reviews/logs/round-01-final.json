@@ -1,0 +1,39 @@
+{
+  "round": "01",
+  "title": "Correctness and public contracts",
+  "elapsed_seconds": 1.55,
+  "checks": [
+    {
+      "check": "unit suite passes",
+      "status": "PASS",
+      "detail": "Ran 36 tests in 0.636s"
+    },
+    {
+      "check": "--version is stable",
+      "status": "PASS",
+      "detail": "ok"
+    },
+    {
+      "check": "demo detects hidden change",
+      "status": "PASS",
+      "detail": "ok"
+    },
+    {
+      "check": "identical subjects give CLEAN",
+      "status": "PASS",
+      "detail": "ok"
+    },
+    {
+      "check": "stdout change gives UNEXPECTED",
+      "status": "PASS",
+      "detail": "ok"
+    },
+    {
+      "check": "digest ignores key order",
+      "status": "PASS",
+      "detail": "ok"
+    }
+  ],
+  "passed": 6,
+  "failed": 0
+}

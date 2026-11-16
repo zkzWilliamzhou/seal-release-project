@@ -1,0 +1,39 @@
+{
+  "round": "05",
+  "title": "Filesystem, special files and resource limits",
+  "elapsed_seconds": 0.52,
+  "checks": [
+    {
+      "check": "symlink inside subject refused",
+      "status": "PASS",
+      "detail": "raised PolicyError"
+    },
+    {
+      "check": "symlink escaping subject refused",
+      "status": "PASS",
+      "detail": "raised PolicyError"
+    },
+    {
+      "check": "FIFO / non-regular file refused",
+      "status": "FAIL",
+      "detail": "AssertionError: unexpected error: eturn _copytree(entries=entries, src=src, dst=dst, symlinks=symlinks,\n  File \"/usr/lib/python3.10/shutil.py\", line 513, in _copytree\n    raise Error(errors)\nshutil.Error: [('/tmp/seal-test-s5osxzql/v1/pipe', '/tmp/seal-probe-koe9g3lb/work/pipe', '`/tmp/seal-test-s5osxzql/v1/pipe` is a named pipe')]\n"
+    },
+    {
+      "check": "subject size cap enforced",
+      "status": "FAIL",
+      "detail": "ManifestError: manifest.policy has unknown keys"
+    },
+    {
+      "check": "temporary workdirs cleaned up",
+      "status": "PASS",
+      "detail": "no leftovers"
+    },
+    {
+      "check": "odd file names captured",
+      "status": "PASS",
+      "detail": "captured"
+    }
+  ],
+  "passed": 4,
+  "failed": 2
+}

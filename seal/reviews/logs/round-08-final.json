@@ -1,0 +1,44 @@
+{
+  "round": "08",
+  "title": "End-to-end pipeline and release artifacts",
+  "elapsed_seconds": 1.69,
+  "checks": [
+    {
+      "check": "full CLI pipeline",
+      "status": "PASS",
+      "detail": "record/compare/bundle/verify all correct"
+    },
+    {
+      "check": "python -m seal works",
+      "status": "PASS",
+      "detail": "ok"
+    },
+    {
+      "check": "./seal launcher works",
+      "status": "PASS",
+      "detail": "ok"
+    },
+    {
+      "check": "runtime has zero third-party imports",
+      "status": "PASS",
+      "detail": "ok"
+    },
+    {
+      "check": "release documents exist",
+      "status": "PASS",
+      "detail": "ok"
+    },
+    {
+      "check": "README passes prose gate",
+      "status": "PASS",
+      "detail": "ok"
+    },
+    {
+      "check": "no star-count promise",
+      "status": "PASS",
+      "detail": "ok"
+    }
+  ],
+  "passed": 7,
+  "failed": 0
+}

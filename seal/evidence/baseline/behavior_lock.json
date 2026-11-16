@@ -1,0 +1,127 @@
+{
+  "schema": 1,
+  "hash": "826e21e888501b197c37e99f382d1a78e89f2fdd529e01f857b1d6718fbcb689",
+  "transcript": [
+    {
+      "args": [
+        "--version"
+      ],
+      "exit_code": 0,
+      "stdout": "seal 0.1.0\n",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "init",
+        "--manifest",
+        "<ROOT>/sealfile.json",
+        "--force"
+      ],
+      "exit_code": 0,
+      "stdout": "wrote <ROOT>/sealfile.json\nedit target.command, probes and intent.scope, then run: seal record --subject DIR --tag NAME\n",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "record",
+        "--subject",
+        "<ROOT>/v1",
+        "--tag",
+        "before",
+        "--manifest",
+        "<ROOT>/sealfile.json",
+        "--out",
+        "<ROOT>/a.json"
+      ],
+      "exit_code": 0,
+      "stdout": "recorded 1 probe(s) from <ROOT>/v1 -> <ROOT>/a.json\n  p1: status=ok exit=0 created=0 modified=0\n",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "record",
+        "--subject",
+        "<ROOT>/v2",
+        "--tag",
+        "after",
+        "--manifest",
+        "<ROOT>/sealfile.json",
+        "--out",
+        "<ROOT>/b.json"
+      ],
+      "exit_code": 0,
+      "stdout": "recorded 1 probe(s) from <ROOT>/v2 -> <ROOT>/b.json\n  p1: status=ok exit=0 created=1 modified=0\n",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "compare",
+        "<ROOT>/a.json",
+        "<ROOT>/b.json",
+        "--manifest",
+        "<ROOT>/sealfile.json"
+      ],
+      "exit_code": 1,
+      "stdout": "seal behaviour report\n  before -> after\n  manifest: 2e0aa7dc9d8b\n\nprobe: p1\n  UNEXPECTED files_delta (difference outside declared intent scope)\n\nverdict: UNEXPECTED\ncounts: UNEXPECTED=1, UNKNOWN=0, INTENDED=0, SAME=5\n",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "compare",
+        "<ROOT>/a.json",
+        "<ROOT>/b.json",
+        "--manifest",
+        "<ROOT>/sealfile.json",
+        "--json"
+      ],
+      "exit_code": 1,
+      "stdout": "{\n  \"channels\": [\n    \"status\",\n    \"stdout\",\n    \"stderr\",\n    \"exit_code\",\n    \"files_delta\",\n    \"env_names\"\n  ],\n  \"counts\": {\n    \"INTENDED\": 0,\n    \"SAME\": 5,\n    \"UNEXPECTED\": 1,\n    \"UNKNOWN\": 0\n  },\n  \"digest\": \"5a6a75dfdb99cb89baa355002c071bbcf291fe4cc718ed9c38c03a2b472b7dd7\",\n  \"manifest_digest\": \"2e0aa7dc9d8b999898204870d6fa6a5e76ff24287f5e806d59c5d040ada6ad95\",\n  \"new_tag\": \"after\",\n  \"old_tag\": \"before\",\n  \"overall\": \"UNEXPECTED\",\n  \"results\": {\n    \"p1\": {\n      \"env_names\": {\n        \"reason\": \"\",\n        \"verdict\": \"SAME\"\n      },\n      \"exit_code\": {\n        \"reason\": \"\",\n        \"verdict\": \"SAME\"\n      },\n      \"files_delta\": {\n        \"reason\": \"difference outside declared intent scope\",\n        \"verdict\": \"UNEXPECTED\"\n      },\n      \"status\": {\n        \"reason\": \"\",\n        \"verdict\": \"SAME\"\n      },\n      \"stderr\": {\n        \"reason\": \"\",\n        \"verdict\": \"SAME\"\n      },\n      \"stdout\": {\n        \"reason\": \"\",\n        \"verdict\": \"SAME\"\n      }\n    }\n  },\n  \"schema\": 1\n}\n",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "compare",
+        "<ROOT>/a.json",
+        "<ROOT>/b.json",
+        "--manifest",
+        "<ROOT>/sealfile.json",
+        "--bundle",
+        "<ROOT>/bundle.json"
+      ],
+      "exit_code": 1,
+      "stdout": "wrote evidence bundle -> <ROOT>/bundle.json\nseal behaviour report\n  before -> after\n  manifest: 2e0aa7dc9d8b\n\nprobe: p1\n  UNEXPECTED files_delta (difference outside declared intent scope)\n\nverdict: UNEXPECTED\ncounts: UNEXPECTED=1, UNKNOWN=0, INTENDED=0, SAME=5\n",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "verify",
+        "<ROOT>/bundle.json",
+        "--old",
+        "<ROOT>/v1",
+        "--new",
+        "<ROOT>/v2",
+        "--trust"
+      ],
+      "exit_code": 0,
+      "stdout": "verification: REPRODUCED\n  recorded verdict: UNEXPECTED\n  fresh verdict   : UNEXPECTED\n  verdict reproduced: True\n",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "demo"
+      ],
+      "exit_code": 0,
+      "stdout": "seal demo: two programs, one hidden behaviour change\n\n  stdout before : order total: 42\n  stdout after  : order total: 42\n  a stdout assertion passes on both\n\nseal behaviour report\n  before -> after\n  manifest: 21ff77b04dea\n\nprobe: prints_total\n  UNEXPECTED files_delta (difference outside declared intent scope)\n\nverdict: UNEXPECTED\ncounts: UNEXPECTED=1, UNKNOWN=0, INTENDED=0, SAME=5\n\nunexpected channels: prints_total/files_delta\n\nseal caught: prints_total/files_delta\nnext: seal init, then seal record --subject DIR --tag NAME\n",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "demo",
+        "--json"
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"demo\": \"behaviour change hidden from stdout assertions\",\n  \"stdout_before\": \"order total: 42\",\n  \"stdout_after\": \"order total: 42\",\n  \"unexpected_channels\": [\n    \"prints_total/files_delta\"\n  ],\n  \"overall\": \"UNEXPECTED\",\n  \"passed\": true,\n  \"kept_dir\": null\n}\n",
+      "stderr": ""
+    }
+  ]
+}

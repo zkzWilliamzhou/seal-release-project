@@ -1,0 +1,99 @@
+{
+  "round": "02",
+  "title": "Boundary conditions and input validation",
+  "elapsed_seconds": 0.01,
+  "checks": [
+    {
+      "check": "reject: timeout zero",
+      "status": "PASS",
+      "detail": "raised ManifestError"
+    },
+    {
+      "check": "reject: timeout bool",
+      "status": "PASS",
+      "detail": "raised ManifestError"
+    },
+    {
+      "check": "reject: timeout 301",
+      "status": "PASS",
+      "detail": "raised ManifestError"
+    },
+    {
+      "check": "reject: timeout string",
+      "status": "PASS",
+      "detail": "raised ManifestError"
+    },
+    {
+      "check": "reject: cap zero",
+      "status": "PASS",
+      "detail": "raised ManifestError"
+    },
+    {
+      "check": "reject: cap bool",
+      "status": "PASS",
+      "detail": "raised ManifestError"
+    },
+    {
+      "check": "reject: cap too large",
+      "status": "PASS",
+      "detail": "raised ManifestError"
+    },
+    {
+      "check": "reject: empty command",
+      "status": "FAIL",
+      "detail": "AssertionError: expected an exception, none raised"
+    },
+    {
+      "check": "reject: nul in arg",
+      "status": "PASS",
+      "detail": "raised ManifestError"
+    },
+    {
+      "check": "reject: duplicate probes",
+      "status": "PASS",
+      "detail": "raised ManifestError"
+    },
+    {
+      "check": "reject: bad scope",
+      "status": "PASS",
+      "detail": "raised ManifestError"
+    },
+    {
+      "check": "reject: bad nondeterminism",
+      "status": "PASS",
+      "detail": "raised ManifestError"
+    },
+    {
+      "check": "reject: empty allowlist",
+      "status": "FAIL",
+      "detail": "AssertionError: expected an exception, none raised"
+    },
+    {
+      "check": "reject: path in allowlist",
+      "status": "PASS",
+      "detail": "raised ManifestError"
+    },
+    {
+      "check": "reject unknown normalization key",
+      "status": "PASS",
+      "detail": "raised ManifestError"
+    },
+    {
+      "check": "reject env key containing '='",
+      "status": "PASS",
+      "detail": "raised ManifestError"
+    },
+    {
+      "check": "missing manifest gives clean error",
+      "status": "PASS",
+      "detail": "ok"
+    },
+    {
+      "check": "path-traversal tags refused",
+      "status": "PASS",
+      "detail": "5 tags refused"
+    }
+  ],
+  "passed": 16,
+  "failed": 2
+}

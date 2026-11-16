@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>seal architecture review 2026-11-11</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+  body { background:#0b1020; color:#e6e9f2; font-family: ui-sans-serif, system-ui, sans-serif; }
+  .card { background:#141b30; border:1px solid #2a3555; border-radius:14px; }
+  .badge { font-size:11px; letter-spacing:.08em; text-transform:uppercase; padding:3px 9px; border-radius:999px; }
+  .strong { background:#124b3a; color:#7ff0c0; }
+  .explore { background:#4a3a12; color:#ffd479; }
+  .spec { background:#3a2140; color:#e2a8ff; }
+  .box { border:1px solid #3a4770; border-radius:10px; padding:10px; background:#0f1629; }
+  .arrow { color:#7f8db5; font-size:20px; }
+  code { color:#9fd0ff; }
+</style>
+</head>
+<body class="p-8">
+<div class="max-w-6xl mx-auto">
+  <h1 class="text-3xl font-semibold mb-2">seal: deepening opportunities</h1>
+  <p class="text-slate-400 mb-1">2026-11-11 &middot; scope: <code>src/seal/**</code> &middot; vocabulary from <code>GLOSSARY.md</code> and codebase-design</p>
+  <p class="text-slate-400 mb-8">Hot spot: <code>compare.py</code>, <code>cli.py</code> and <code>demo.py</code> changed in every review round. ADRs 0001 to 0004 are not reopened here.</p>
+
+  <div class="card p-5 mb-8">
+    <h2 class="text-xl mb-3">Current module graph</h2>
+    <div class="mermaid">
+      graph LR
+        CLI[cli.py] --> CMP[compare.py]
+        CLI --> RUN[runner.py]
+        CLI --> BND[bundle.py]
+        CLI --> DEMO[demo.py]
+        CLI --> MAN[manifest.py]
+        BND --> CMP
+        BND --> RUN
+        CMP --> CAN[canonical.py]
+        RUN --> CAN
+        DEMO --> CMP
+        DEMO --> RUN
+    </div>
+    <p class="text-slate-400 text-sm mt-3">Human-readable text lives in <code>compare.py</code> (<code>render_report</code>) and <code>demo.py</code> (<code>render_demo</code>). Three modules reach for two renderers across the seam. Two adapters make this seam real.</p>
+  </div>
+
+  <div class="grid grid-cols-1 gap-6">
+
+    <div class="card p-6">
+      <div class="flex justify-between items-start mb-3">
+        <h2 class="text-xl font-semibold">C1. Concentrate presentation in one deep module</h2>
+        <span class="badge strong">Strong</span>
+      </div>
+      <p class="text-slate-300 mb-2"><b>Files:</b> <code>compare.py</code>, <code>demo.py</code>, <code>cli.py</code>, <code>bundle.py</code>, new <code>render.py</code></p>
+      <p class="text-slate-300 mb-2"><b>Problem:</b> <code>compare.py</code> owns classification and a 24-line human renderer. Its interface exposes two unrelated jobs. A reader of the verdict model must step through presentation code. <code>demo.py</code> owns a second renderer with the same job. Locality of the presentation concept is low.</p>
+      <p class="text-slate-300 mb-2"><b>Solution:</b> A single <code>render.py</code> module owns <code>render_report</code> and <code>render_demo</code>. <code>compare.py</code> keeps pure classification. Callers import from the one place that owns text. No verdict, exit code, digest, or JSON field changes.</p>
+      <p class="text-slate-300 mb-4"><b>Benefits:</b> Deleting either renderer from its old module concentrates all presentation complexity in <code>render.py</code>. The deletion test passes. Leverage is high: three call sites and the behaviour-lock transcript depend on unchanged text. Tests can assert rendering through one interface. The seam between classification and presentation becomes real with one adapter on each side.</p>
+      <div class="grid grid-cols-2 gap-4">
+        <div class="box">
+          <p class="text-xs uppercase tracking-widest text-slate-500 mb-2">before</p>
+          <div class="text-sm leading-7">
+            <div>cli.py &rarr; compare.render_report</div>
+            <div>bundle.py &rarr; compare.render_report</div>
+            <div>demo.py &rarr; demo.render_demo</div>
+            <div class="mt-2 text-slate-400">compare.py: classify + text</div>
+            <div class="text-slate-400">demo.py: fixture + text</div>
+          </div>
+        </div>
+        <div class="box">
+          <p class="text-xs uppercase tracking-widest text-slate-500 mb-2">after</p>
+          <div class="text-sm leading-7">
+            <div>cli.py &rarr; render.render_report</div>
+            <div>bundle.py &rarr; render.render_report</div>
+            <div>demo.py &rarr; render.render_demo</div>
+            <div class="mt-2 text-slate-400">compare.py: classify only</div>
+            <div class="text-slate-400">render.py: all text</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card p-6">
+      <div class="flex justify-between items-start mb-3">
+        <h2 class="text-xl font-semibold">C2. Extract JSON file helpers from cli.py</h2>
+        <span class="badge explore">Worth exploring</span>
+      </div>
+      <p class="text-slate-300 mb-2"><b>Files:</b> <code>cli.py</code>, possible <code>jsonio.py</code></p>
+      <p class="text-slate-300 mb-2"><b>Problem:</b> <code>_read_json</code>, <code>_write_json</code> and <code>_check_tag</code> are three small helpers inside the CLI module.</p>
+      <p class="text-slate-300 mb-2"><b>Solution:</b> Move them to a <code>jsonio.py</code> module.</p>
+      <p class="text-slate-300 mb-4"><b>Benefits:</b> Small. The deletion test fails: removing these helpers from <code>cli.py</code> only moves them. Only one adapter exists, so the seam stays hypothetical. Leverage is one call site per helper. Reject for this pass.</p>
+      <div class="grid grid-cols-2 gap-4">
+        <div class="box"><p class="text-xs uppercase tracking-widest text-slate-500 mb-2">before</p><div class="text-sm">cli.py owns 3 helpers<br>1 caller each</div></div>
+        <div class="box"><p class="text-xs uppercase tracking-widest text-slate-500 mb-2">after</p><div class="text-sm">jsonio.py owns 3 helpers<br>1 caller each, 1 new module</div></div>
+      </div>
+    </div>
+
+    <div class="card p-6">
+      <div class="flex justify-between items-start mb-3">
+        <h2 class="text-xl font-semibold">C3. Split safety validation out of runner.py</h2>
+        <span class="badge spec">Speculative</span>
+      </div>
+      <p class="text-slate-300 mb-2"><b>Files:</b> <code>runner.py</code>, possible <code>sandbox.py</code></p>
+      <p class="text-slate-300 mb-2"><b>Problem:</b> <code>runner.py</code> holds subject validation, argv policy, execution and capture. It is the widest module in the codebase.</p>
+      <p class="text-slate-300 mb-2"><b>Solution:</b> Move <code>_validate_subject_tree</code> and <code>_check_command</code> into a <code>sandbox.py</code> module behind a single <code>prepare()</code> interface.</p>
+      <p class="text-slate-300 mb-4"><b>Benefits:</b> Two adapters exist (<code>cli.record</code> and <code>bundle.reproduce</code>), so the seam is real. Deleting the safety code from <code>runner.py</code> would concentrate policy in one deep module. <b>Warning callout:</b> this touches the code that rounds 3, 4 and 5 fixed. The behaviour lock would still pass, but the cost of a mistake is a sandbox escape. Defer to v2 with dedicated adversarial tests.</p>
+      <div class="grid grid-cols-2 gap-4">
+        <div class="box"><p class="text-xs uppercase tracking-widest text-slate-500 mb-2">before</p><div class="text-sm">runner.py: validate + execute + capture</div></div>
+        <div class="box"><p class="text-xs uppercase tracking-widest text-slate-500 mb-2">after</p><div class="text-sm">sandbox.py: policy<br>runner.py: execute + capture</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card p-6 mt-8 border-emerald-700">
+    <h2 class="text-xl font-semibold mb-2">Top recommendation: C1</h2>
+    <p class="text-slate-300">C1 has the highest leverage per changed line. It deepens <code>compare.py</code>, gives the presentation concept one home, and leaves every observable behaviour untouched. The manager picked it under the behaviour-lock constraint from the brief. C2 fails the deletion test. C3 is real but moves safety-sensitive code that eight review rounds just hardened.</p>
+    <p class="text-slate-400 text-sm mt-3">Grilling outcome: no new glossary term. No ADR conflict. Verification obligations: <code>python3 tests/behavior_lock.py --check</code>, the 36-test unit suite, and all eight review rounds must return the same result before and after the move.</p>
+  </div>
+</div>
+<script>mermaid.initialize({startOnLoad:true, theme:'dark'});</script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+{
+  "round": "03",
+  "title": "Command execution and sandbox escape",
+  "elapsed_seconds": 1.94,
+  "checks": [
+    {
+      "check": "disallowed executable refused",
+      "status": "PASS",
+      "detail": "raised PolicyError"
+    },
+    {
+      "check": "absolute executable outside subject refused",
+      "status": "PASS",
+      "detail": "raised PolicyError"
+    },
+    {
+      "check": "parent-directory executable refused",
+      "status": "PASS",
+      "detail": "raised PolicyError"
+    },
+    {
+      "check": "shell metacharacters stay literal",
+      "status": "PASS",
+      "detail": "argv literal, no shell"
+    },
+    {
+      "check": "static scan: no shell execution",
+      "status": "PASS",
+      "detail": "ok"
+    },
+    {
+      "check": "subject executable runs from workdir copy",
+      "status": "PASS",
+      "detail": "path normalized to <WORKDIR>"
+    },
+    {
+      "check": "timeout kills the whole process group",
+      "status": "PASS",
+      "detail": "process group terminated"
+    }
+  ],
+  "passed": 7,
+  "failed": 0
+}

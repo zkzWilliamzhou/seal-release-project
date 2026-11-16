@@ -1,0 +1,44 @@
+{
+  "round": "08",
+  "title": "End-to-end pipeline and release artifacts",
+  "elapsed_seconds": 1.65,
+  "checks": [
+    {
+      "check": "full CLI pipeline",
+      "status": "PASS",
+      "detail": "record/compare/bundle/verify all correct"
+    },
+    {
+      "check": "python -m seal works",
+      "status": "PASS",
+      "detail": "ok"
+    },
+    {
+      "check": "./seal launcher works",
+      "status": "PASS",
+      "detail": "ok"
+    },
+    {
+      "check": "runtime has zero third-party imports",
+      "status": "PASS",
+      "detail": "ok"
+    },
+    {
+      "check": "release documents exist",
+      "status": "FAIL",
+      "detail": "AssertionError: missing: ['README.md', 'CONTRIBUTING.md', 'SECURITY.md', 'GLOSSARY.md', 'docs/THREAT_MODEL.md', 'docs/06_launch_scorecard.md', 'docs/05_architecture_refactor.md', 'docs/07_prior_art.md', '.github/workflows/ci.yml']"
+    },
+    {
+      "check": "README passes prose gate",
+      "status": "FAIL",
+      "detail": "FileNotFoundError: [Errno 2] No such file or directory: '/data/workspace/seal/README.md'"
+    },
+    {
+      "check": "no star-count promise",
+      "status": "FAIL",
+      "detail": "FileNotFoundError: [Errno 2] No such file or directory: '/data/workspace/seal/README.md'"
+    }
+  ],
+  "passed": 4,
+  "failed": 3
+}

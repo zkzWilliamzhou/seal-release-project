@@ -1,0 +1,39 @@
+{
+  "round": "05",
+  "title": "Filesystem, special files and resource limits",
+  "elapsed_seconds": 0.7,
+  "checks": [
+    {
+      "check": "symlink inside subject refused",
+      "status": "PASS",
+      "detail": "raised PolicyError"
+    },
+    {
+      "check": "symlink escaping subject refused",
+      "status": "PASS",
+      "detail": "raised PolicyError"
+    },
+    {
+      "check": "FIFO / non-regular file refused",
+      "status": "PASS",
+      "detail": "non-regular file refused promptly"
+    },
+    {
+      "check": "subject size cap enforced",
+      "status": "PASS",
+      "detail": "raised PolicyError"
+    },
+    {
+      "check": "temporary workdirs cleaned up",
+      "status": "PASS",
+      "detail": "no leftovers"
+    },
+    {
+      "check": "odd file names captured",
+      "status": "PASS",
+      "detail": "captured"
+    }
+  ],
+  "passed": 6,
+  "failed": 0
+}

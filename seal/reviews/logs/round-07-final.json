@@ -1,0 +1,39 @@
+{
+  "round": "07",
+  "title": "Determinism and portability",
+  "elapsed_seconds": 0.11,
+  "checks": [
+    {
+      "check": "repeated runs are byte-identical",
+      "status": "PASS",
+      "detail": "ok"
+    },
+    {
+      "check": "temporary path normalized",
+      "status": "PASS",
+      "detail": "ok"
+    },
+    {
+      "check": "deterministic base environment",
+      "status": "PASS",
+      "detail": "ok"
+    },
+    {
+      "check": "normalization stays declared",
+      "status": "PASS",
+      "detail": "only declared rules apply"
+    },
+    {
+      "check": "demo verdict is stable",
+      "status": "PASS",
+      "detail": "ok"
+    },
+    {
+      "check": "PYTHONHASHSEED pinned",
+      "status": "PASS",
+      "detail": "ok"
+    }
+  ],
+  "passed": 6,
+  "failed": 0
+}
